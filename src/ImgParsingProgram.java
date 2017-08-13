@@ -2,6 +2,8 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Calendar;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -9,14 +11,21 @@ import org.xmlpull.v1.XmlPullParserFactory;
 public class ImgParsingProgram {
    
     //영화이미지를 가져오기 위한 naver open api 메소드
-    static String naverXmlData(String title) throws IOException {
+    static ArrayList<MovieInfo> naverXmlData(String keyword) throws IOException {
+    	ArrayList<MovieInfo> list = new ArrayList<>();
+    	MovieInfo info;
+    	boolean inImgUrl = false;
     	String imgUrl = "";
     	String replacedImgUrl = "";
+    	int year = Calendar.getInstance().get(Calendar.YEAR);
+    	
         String clientId = "aVyrhY81Hji8r3ApgQzx";
         String clientSecret = "e5vXcLz5J9";
-        String text = URLEncoder.encode(title, "UTF-8");
-        String apiURL = "https://openapi.naver.com/v1/search/movie.xml?query=" + text + 
-        				"&start=1&display=80";  //영화 api
+        String encodedKeyword = URLEncoder.encode(keyword, "UTF-8");
+        String apiURL = "https://openapi.naver.com/v1/search/movie.xml?query=" + encodedKeyword + 
+        				"&start=1&display=100&yearfrom="+ year +"&yearto="+ year;  //영화 api
+        
+        
 
         URL url = new URL(apiURL);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -42,23 +51,29 @@ public class ImgParsingProgram {
 
                     case XmlPullParser.START_TAG:
                         tag = xpp.getName();    //태그 이름 얻어오기
-                        System.out.println(tag);
-                        if (tag.equals("item")) ;// 첫번째 검색결과
-
-                        else if (tag.equals("link")) {
-                            xpp.next();
-                            imgUrl = xpp.getText();
+                        if (tag.equals("link")) {
+                        	inImgUrl = true;
                         }
 
                         break;
 
                     case XmlPullParser.TEXT:
+                    	if (inImgUrl) {
+                            imgUrl = xpp.getText();
+                            replacedImgUrl = imgUrl.replace("basic.nhn?code=", "photoViewPopup.nhn?movieCode=");
+                            inImgUrl = false;
+                    	}
+                    	
                         break;
 
                     case XmlPullParser.END_TAG:
                         tag = xpp.getName();    //테그 이름 얻어오기
-                        if (tag.equals("item"))
-                            break;
+                        if (tag.equals("item")) {
+                        	info = new MovieInfo();
+                        	info.setImgLink(replacedImgUrl);
+                        	list.add(info);
+                        }
+                        break;
                 }
 
                 eventType = xpp.next();
@@ -68,14 +83,19 @@ public class ImgParsingProgram {
         }
         
         
-        return imgUrl;
+        return list;
 //        replacedImgUrl = imgUrl.replace("basic.nhn?code=", "photoViewPopup.nhn?movieCode=");
 //        return replacedImgUrl;
     }
    public static void main(String[] args) throws IOException {
-      String str = ImgParsingProgram.naverXmlData("택시운전사");
 	   
-      System.out.println(str);
+	   ArrayList<MovieInfo> list = new ArrayList<>();
+	   
+	   list = naverXmlData("청년경찰");
+	   
+	   for(MovieInfo info: list)
+		   System.out.println(info.getImgLink());
+	   
 
    }
 

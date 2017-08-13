@@ -4,6 +4,7 @@ public class MovieInfo {
 	private String date;
 	private String nation;
 	private String genre;
+	private String imgLink;
 	
 	public String getTitle() {
 		return title;
@@ -36,10 +37,21 @@ public class MovieInfo {
 	public void setGenre(String genre) {
 		this.genre = genre;
 	}
-	
+
+	public String getImgLink() {
+		return imgLink;
+	}
+
+	public void setImgLink(String imgLink) {
+		this.imgLink = imgLink;
+	}
+
 	@Override
 	public String toString() {
-		return "movieInfo [title=" + title + ", date=" + date + ", nation=" + nation + ", genre=" + genre + "]";
+		return "MovieInfo [title=" + title + ", date=" + date + ", nation=" + nation + ", genre=" + genre + ", imgLink="
+				+ imgLink + "]";
 	}
+	
+	
 	
 }
