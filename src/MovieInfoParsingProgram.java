@@ -19,7 +19,8 @@ public class MovieInfoParsingProgram {
     	String key = "354c88719a60cd3da952a4be7dbf367e";
     	String encodedKeyword = URLEncoder.encode(keyword, "UTF-8");
         String apiURL;
-        apiURL = "http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieList.xml?key="+key+"&movieNm="+encodedKeyword;
+        apiURL = "http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieList.xml?key="
+        		+key+"&itemPerPage=3&movieNm="+encodedKeyword;
 
         URL url = new URL(apiURL);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -37,13 +38,16 @@ public class MovieInfoParsingProgram {
             int eventType = xpp.getEventType();
 
             while (eventType != XmlPullParser.END_DOCUMENT) {
-                
+                System.out.println("\n while");
 				switch (eventType) {
                     case XmlPullParser.START_DOCUMENT:
                         break;
 
                     case XmlPullParser.START_TAG:
+                    	System.out.println("1: start tag");		//1. start태그를 읽으면서 해당태그면 변수 flag를 true로 바꿔줌
                         tag = xpp.getName();    //태그 이름 얻어오기
+                        System.out.println("tag: "+tag);
+                        
                         if (tag.equals("movieNm")) {
                             intitle = true;
                         }
@@ -62,29 +66,37 @@ public class MovieInfoParsingProgram {
 
                         break;
 
-                    case XmlPullParser.TEXT:
+                    case XmlPullParser.TEXT:		//2. 태그의 text를 임시변수에 넣어줌
+                    	System.out.println("2: text");
                         if (intitle) {
+                        	System.out.println("2-1: text 읽어오기");
                             title = xpp.getText();
                             intitle = false;
                         }
                         if (indate) {
+                        	System.out.println("2-2: text 읽어오기");
                             date = xpp.getText();
                             indate = false;
                         }
                         if (innation) {
+                        	System.out.println("2-3: text 읽어오기");
                             nation = xpp.getText();
                             innation = false;
                         }
                         if (ingenre) {
+                        	System.out.println("2-4: text 읽어오기");
                             genre = xpp.getText();
                             ingenre = false;
                         }
 
                         break;
 
-                    case XmlPullParser.END_TAG:
+                    case XmlPullParser.END_TAG:		//3. 영화 1개가 끝나는 태그(movie)를 만나면 임시변수이 있는 값을 몽땅 클래스에 넣고 list배열에 추가함
+                    	System.out.println("3: end tag");
                         tag = xpp.getName();    //테그 이름 얻어오기
+                        System.out.println("tag: "+tag+"\n==============");
                         if (tag.equals("movie")) {
+                        	System.out.println("3-1: 리스트에 담기\n********************************************************");
                         	info = new MovieInfo();
                             info.setTitle(title);
                             info.setDate(date);
@@ -109,7 +121,7 @@ public class MovieInfoParsingProgram {
 	public static void main(String[] args) throws IOException {
 		ArrayList<MovieInfo> list;
 		
-		list = MovieInfoParsingProgram.getXmlData("타이타닉");
+		list = MovieInfoParsingProgram.getXmlData("대부");
 		
 		for(MovieInfo m: list)
 			System.out.println(m.toString());
