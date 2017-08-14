@@ -22,8 +22,11 @@ public class ImgParsingProgram {
         String clientId = "aVyrhY81Hji8r3ApgQzx";
         String clientSecret = "e5vXcLz5J9";
         String encodedKeyword = URLEncoder.encode(keyword, "UTF-8");
-        String apiURL = "https://openapi.naver.com/v1/search/movie.xml?query=" + encodedKeyword + 
+/*        String apiURL = "https://openapi.naver.com/v1/search/movie.xml?query=" + encodedKeyword + 
         				"&start=1&display=100&yearfrom="+ year +"&yearto="+ year;  //영화 api
+*/        
+        String apiURL = "https://openapi.naver.com/v1/search/movie.xml?query=" + encodedKeyword + 
+				"&start=1&display=100";  //영화 api
         
         
 
@@ -71,6 +74,7 @@ public class ImgParsingProgram {
                         if (tag.equals("item")) {
                         	info = new MovieInfo();
                         	info.setImgLink(replacedImgUrl);
+                        	//info.setImgLink(imgUrl);
                         	list.add(info);
                         }
                         break;
@@ -87,11 +91,12 @@ public class ImgParsingProgram {
 //        replacedImgUrl = imgUrl.replace("basic.nhn?code=", "photoViewPopup.nhn?movieCode=");
 //        return replacedImgUrl;
     }
+    
    public static void main(String[] args) throws IOException {
 	   
 	   ArrayList<MovieInfo> list = new ArrayList<>();
 	   
-	   list = naverXmlData("청년경찰");
+	   list = naverXmlData("헤이트풀8");
 	   
 	   for(MovieInfo info: list)
 		   System.out.println(info.getImgLink());

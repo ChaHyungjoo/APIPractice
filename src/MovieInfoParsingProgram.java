@@ -48,7 +48,7 @@ public class MovieInfoParsingProgram {
                         tag = xpp.getName();    //태그 이름 얻어오기
 //                        System.out.println("tag: "+tag);
                         
-                        if (tag.equals("movieNmEn")) {
+                        if (tag.equals("movieNm")) {
                             inTitle = true;
                         }
 
@@ -124,7 +124,7 @@ public class MovieInfoParsingProgram {
 		list = MovieInfoParsingProgram.getXmlData("택시운전사");
 		
 		for(MovieInfo info: list)
-			System.out.println(info.getTitle());
+			System.out.println(info.toString());
 
 	}
 
