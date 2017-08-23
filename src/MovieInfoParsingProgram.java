@@ -1,4 +1,6 @@
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -7,6 +9,31 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 public class MovieInfoParsingProgram {
+	static String getJsonData(String keyword) throws IOException {
+		String title = "", date = "", nation = "", genre = "";
+		String json = "";
+		BufferedReader br;
+		
+		ArrayList<MovieInfo> list = new ArrayList<MovieInfo>();
+		
+		String key = "354c88719a60cd3da952a4be7dbf367e";
+    	String encodedKeyword = URLEncoder.encode(keyword, "UTF-8");
+        String apiURL;
+        apiURL = "http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieList.json?key="
+        		+key+"&itemPerPage=3&movieNm="+encodedKeyword;
+
+        URL url = new URL(apiURL);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+        connection.setRequestProperty("Content-Type", "application/json");
+        
+        br = new BufferedReader(new InputStreamReader(connection.getInputStream(),"UTF-8"));
+		
+		json = br.readLine();
+        
+		return json;
+	}
+	
 	
     //XmlPullParser를 이용하여 영화진응위원회 에서 제공하는 OpenAPI XML 파일 파싱하기(parsing)
     static ArrayList<MovieInfo> getXmlData(String keyword) throws IOException {
@@ -119,12 +146,17 @@ public class MovieInfoParsingProgram {
     }
 
 	public static void main(String[] args) throws IOException {
-		ArrayList<MovieInfo> list;
+		
+/*		ArrayList<MovieInfo> list;
 		
 		list = MovieInfoParsingProgram.getXmlData("택시운전사");
 		
 		for(MovieInfo info: list)
-			System.out.println(info.toString());
+			System.out.println(info.toString());*/
+		
+		String json =  MovieInfoParsingProgram.getJsonData("택시운전사");
+		
+		System.out.println(json);
 
 	}
 
