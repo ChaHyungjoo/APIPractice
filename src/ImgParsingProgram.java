@@ -73,7 +73,7 @@ public class ImgParsingProgram {
                         tag = xpp.getName();    //테그 이름 얻어오기
                         if (tag.equals("item")) {
                         	info = new MovieInfo();
-                        	info.setImgLink(replacedImgUrl);
+                        	info.setPosterImage(replacedImgUrl);
                         	//info.setImgLink(imgUrl);
                         	list.add(info);
                         }
@@ -99,7 +99,7 @@ public class ImgParsingProgram {
 	   list = naverXmlData("헤이트풀8");
 	   
 	   for(MovieInfo info: list)
-		   System.out.println(info.getImgLink());
+		   System.out.println(info.getPosterImage());
 	   
 
    }
