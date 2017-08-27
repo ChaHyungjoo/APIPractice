@@ -1,13 +1,13 @@
 
 public class MovieInfo {
-	private String movieNm;			//영화명(국문)
-	private String movieNmEn;		//영화명(영문)
-	private String openDt;			//개봉연도
-	private String nationAlt;		//제작국가
-	private String genreAlt;		//장르
-	private String directors;		//감독
-	private String backdropImage;	//스틸컷(배경크기) 이미지
-	private String posterImage;		//포스터 이미지
+	private String movieNm = "";			//영화명(국문)
+	private String movieNmEn = "";			//영화명(영문)
+	private String openDt = "";				//개봉연도
+	private String nationAlt = "";			//제작국가
+	private String genreAlt = "";			//장르
+	private String directors = "";			//감독
+	private String backdropImage = "";		//스틸컷(배경크기) 이미지
+	private String posterImage = "";		//포스터 이미지
 	
 	
 	public String getMovieNm() {
@@ -55,7 +55,7 @@ public class MovieInfo {
 	}
 	
 	public void setDirectors(String directors) {
-		this.directors = directors;
+		this.directors = this.directors+" "+directors;
 	}
 	
 	public String getBackdropImage() {
