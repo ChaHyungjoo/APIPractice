@@ -1,56 +1,84 @@
 
 public class MovieInfo {
-	private String title;
-	private String date;
-	private String nation;
-	private String genre;
-	private String imgLink;
+	private String movieNm;			//영화명(국문)
+	private String movieNmEn;		//영화명(영문)
+	private String openDt;			//개봉연도
+	private String nationAlt;		//제작국가
+	private String genreAlt;		//장르
+	private String directors;		//감독
+	private String backdropImage;	//스틸컷(배경크기) 이미지
+	private String posterImage;		//포스터 이미지
 	
-	public String getTitle() {
-		return title;
-	}
 	
-	public void setTitle(String title) {
-		this.title = title;
-	}
-	
-	public String getDate() {
-		return date;
+	public String getMovieNm() {
+		return movieNm;
 	}
 	
-	public void setDate(String date) {
-		this.date = date;
+	public void setMovieNm(String movieNm) {
+		this.movieNm = movieNm;
 	}
 	
-	public String getNation() {
-		return nation;
+	public String getMovieNmEn() {
+		return movieNmEn;
 	}
 	
-	public void setNation(String nation) {
-		this.nation = nation;
+	public void setMovieNmEn(String movieNmEn) {
+		this.movieNmEn = movieNmEn;
 	}
 	
-	public String getGenre() {
-		return genre;
+	public String getOpenDt() {
+		return openDt;
 	}
 	
-	public void setGenre(String genre) {
-		this.genre = genre;
+	public void setOpenDt(String openDt) {
+		this.openDt = openDt;
 	}
-
-	public String getImgLink() {
-		return imgLink;
+	
+	public String getNationAlt() {
+		return nationAlt;
 	}
-
-	public void setImgLink(String imgLink) {
-		this.imgLink = imgLink;
+	
+	public void setNationAlt(String nationAlt) {
+		this.nationAlt = nationAlt;
 	}
-
+	
+	public String getGenreAlt() {
+		return genreAlt;
+	}
+	
+	public void setGenreAlt(String genreAlt) {
+		this.genreAlt = genreAlt;
+	}
+	
+	public String getDirectors() {
+		return directors;
+	}
+	
+	public void setDirectors(String directors) {
+		this.directors = directors;
+	}
+	
+	public String getBackdropImage() {
+		return backdropImage;
+	}
+	
+	public void setBackdropImage(String backdropImage) {
+		this.backdropImage = backdropImage;
+	}
+	
+	public String getPosterImage() {
+		return posterImage;
+	}
+	
+	public void setPosterImage(String posterImage) {
+		this.posterImage = posterImage;
+	}
+	
 	@Override
 	public String toString() {
-		return "MovieInfo [title=" + title + ", date=" + date + ", nation=" + nation + ", genre=" + genre + ", imgLink="
-				+ imgLink + "]";
+		return "MovieInfo [movieNm=" + movieNm + ", movieNmEn=" + movieNmEn + ", openDt=" + openDt + ", nationAlt="
+				+ nationAlt + ", genreAlt=" + genreAlt + ", directors=" + directors + ", backdropImage=" + backdropImage
+				+ ", posterImage=" + posterImage + "]";
 	}
-	
 	
 }
