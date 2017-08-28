@@ -21,7 +21,7 @@ public class MovieInfoParsingProgram {
 		for(MovieInfo info: list)
 			System.out.println(info.toString());*/
 		
-		String json =  parsing.getJsonData("택시운전사");
+		String json =  parsing.KOBISJsonData("택시운전사");
 		
 		System.out.println(json);
 

@@ -12,8 +12,12 @@ public class JsonProgram {
 		MovieInfo info;
 		
 		String json = "";
+		String keyword = "혹성탈출";
+		
+		//영화진흥위원회에서 가져온 영화 정보 json 파싱
 		try {
-			json = parsing.getJsonData("택시운전사");
+			json = parsing.KOBISJsonData(keyword);
+			System.out.println(json);
 			
 			JSONObject obj = new JSONObject(json);			//검색된 모든 영화가 담긴 JSON형의 자료를 string으로 변환한 json으로 JSONObject형의 객체 obj를 만듦
 			JSONObject movieListResult = (JSONObject) obj.get("movieListResult");		//obj에서 key값이 movieListResult인 것으로 다시 JSONObject형의 객체를 만듦
@@ -42,12 +46,53 @@ public class JsonProgram {
 				list.add(info);		//영화 정보(info)를 ArrayList형 객체 list에 담아줌
 			}
 			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		//Naver에서 가져온 영화 정보 json 파싱
+		try {
+			json = parsing.NaverJsonData(keyword);
+			System.out.println(json);
+			
+			JSONObject obj = new JSONObject(json);
+			
+			JSONArray items = (JSONArray) obj.get("items");
+			for(int i=0; i<items.length(); i++) {
+				JSONObject entity = (JSONObject) items.get(i);
+				
+				for(int j=0; j<list.size(); j++) {
+					String title = entity.getString("title");
+					String subtitle = entity.getString("subtitle");
+					
+					if(subtitle.equals(list.get(j).getMovieNmEn())) {
+						String imgUrl = entity.getString("link");
+				    	String replacedImgUrl = imgUrl.replace("basic.nhn?code=", "photoViewPopup.nhn?movieCode=");
+				    	list.get(j).setPosterImage(replacedImgUrl);
+					}
+					
+				}
+				
+//				info = new MovieInfo();
+//				String imgUrl = entity.getString("link");
+//		    	String replacedImgUrl = imgUrl.replace("basic.nhn?code=", "photoViewPopup.nhn?movieCode=");
+//				info.setPosterImage(replacedImgUrl);
+//				info.setMovieNm(entity.getString("title"));		//키 값이 movieNm(영화제목)인 것의 값을 info에 셋팅
+//				info.setMovieNmEn(entity.getString("subtitle"));
+//				info.setOpenDt(entity.getString("pubDate"));
+//				info.setNationAlt(entity.getString("nationAlt"));
+//				info.setDirectors(entity.getString("director"));
+//				list.add(info);
+			}
+			
 			for(MovieInfo m: list)
 				System.out.println(m.toString());
+			
 			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
 
 	}
 

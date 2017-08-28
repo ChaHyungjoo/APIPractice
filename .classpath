@@ -2,9 +2,9 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/workspace/APIPractice/lib/json-20170516.jar"/>
-	<classpathentry kind="lib" path="C:/workspace/APIPractice/lib/kxml2-2.3.0.jar"/>
-	<classpathentry kind="lib" path="C:/workspace/APIPractice/lib/ojdbc8.jar"/>
+	<classpathentry kind="lib" path="lib/json-20170516.jar"/>
+	<classpathentry kind="lib" path="lib/kxml2-2.3.0.jar"/>
 	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.43-bin.jar"/>
+	<classpathentry kind="lib" path="lib/ojdbc8.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
