@@ -11,6 +11,30 @@ import org.xmlpull.v1.XmlPullParserFactory;
 
 public class MovieInfoParsing {
 	
+	//TMDB에서 제공하는 OpenAPI JSON 파일을 String으로 변환하여 반환
+	public String TMDBJsonData(String keyword) throws IOException {
+		String json = "";
+		BufferedReader br;
+		
+		String key = "fc26b37628734575187d1be55c6a3c85";
+    	String encodedKeyword = URLEncoder.encode(keyword, "UTF-8");
+        String apiURL;
+        
+        apiURL = "https://api.themoviedb.org/3/search/movie?"
+        		+ "api_key=" + key + "&query=" + encodedKeyword + "&include_adult=false";	//해당연도의 영화를 알고싶으면 맨끝에 &year=2017 조건을 추가
+        
+        URL url = new URL(apiURL);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+        connection.setRequestProperty("Content-Type", "application/json");
+        
+        br = new BufferedReader(new InputStreamReader(connection.getInputStream(),"UTF-8"));
+		
+		json = br.readLine();
+		
+		return json;
+	}
+	
 	//Naver에서 제공하는 OpenAPI JSON 파일을 String으로 변환하여 반환
 	public String NaverJsonData(String keyword) throws IOException {
 		String _json = "";
@@ -20,7 +44,7 @@ public class MovieInfoParsing {
         String clientSecret = "e5vXcLz5J9";
         String encodedKeyword = URLEncoder.encode(keyword, "UTF-8");
 		
-        String apiURL = "https://openapi.naver.com/v1/search/movie.json?query=" + encodedKeyword;
+        String apiURL = "https://openapi.naver.com/v1/search/movie.json?query=" + encodedKeyword + "&display=100";
 		
         URL url = new URL(apiURL);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -46,8 +70,6 @@ public class MovieInfoParsing {
 	public String KOBISJsonData(String keyword) throws IOException {
 		String json = "";
 		BufferedReader br;
-		
-//		ArrayList<MovieInfo> list = new ArrayList<MovieInfo>();
 		
 		String key = "354c88719a60cd3da952a4be7dbf367e";
     	String encodedKeyword = URLEncoder.encode(keyword, "UTF-8");
@@ -80,7 +102,7 @@ public class MovieInfoParsing {
     	String encodedKeyword = URLEncoder.encode(keyword, "UTF-8");
         String apiURL;
         apiURL = "http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieList.xml?key="
-        		+key+"&itemPerPage=1000&movieNm="+encodedKeyword;
+        		+ key + "&itemPerPage=1000&movieNm=" + encodedKeyword;
 
         URL url = new URL(apiURL);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -174,7 +196,6 @@ public class MovieInfoParsing {
             e.printStackTrace();
         }
         
-
         return list;
     }
 }
