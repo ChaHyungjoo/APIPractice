@@ -1,15 +1,26 @@
 
 public class MovieInfo {
+	private String movieCd;			//영화코드(영화진흥위원회에 등록된 영화)
 	private String movieNm;			//영화명(국문)
-	private String movieNmEn;			//영화명(영문)
-	private String openDt;				//개봉연도
-	private String nationAlt;			//제작국가
-	private String genreAlt;			//장르
-	private String directors;			//감독
-	private String backdropImage;		//스틸컷(배경크기) 이미지
+	private String movieNmEn;		//영화명(영문)
+	private String showTm;			//상영시간
+	private String openDt;			//개봉연도
+	private String nationAlt;		//제작국가
+	private String genreAlt;		//장르
+	private String directors;		//감독
+	private String actors;			//배우
+	private String backdropImage;	//스틸컷(배경크기) 이미지
 	private String posterImage;		//포스터 이미지
 	
 	
+	public String getMovieCd() {
+		return movieCd;
+	}
+
+	public void setMovieCd(String movieCd) {
+		this.movieCd = movieCd;
+	}
+
 	public String getMovieNm() {
 		return movieNm;
 	}
@@ -26,6 +37,14 @@ public class MovieInfo {
 		this.movieNmEn = movieNmEn;
 	}
 	
+	public String getShowTm() {
+		return showTm;
+	}
+
+	public void setShowTm(String showTm) {
+		this.showTm = showTm;
+	}
+
 	public String getOpenDt() {
 		return openDt;
 	}
@@ -58,9 +77,17 @@ public class MovieInfo {
 		if(this.directors==null)
 			this.directors = directors;
 		else 
-			this.directors = this.directors+" "+directors;
+			this.directors = this.directors+directors;
 	}
 	
+	public String getActors() {
+		return actors;
+	}
+
+	public void setActors(String actors) {
+		this.actors = actors;
+	}
+
 	public String getBackdropImage() {
 		return backdropImage;
 	}
@@ -76,12 +103,13 @@ public class MovieInfo {
 	public void setPosterImage(String posterImage) {
 		this.posterImage = posterImage;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "MovieInfo [movieNm=" + movieNm + ", movieNmEn=" + movieNmEn + ", openDt=" + openDt + ", nationAlt="
-				+ nationAlt + ", genreAlt=" + genreAlt + ", directors=" + directors + ", backdropImage=" + backdropImage
-				+ ", posterImage=" + posterImage + "]";
+		return "MovieInfo [movieCd=" + movieCd + ", movieNm=" + movieNm + ", movieNmEn=" + movieNmEn + ", showTm="
+				+ showTm + ", openDt=" + openDt + ", nationAlt=" + nationAlt + ", genreAlt=" + genreAlt + ", directors="
+				+ directors + ", actors=" + actors + ", backdropImage=" + backdropImage + ", posterImage=" + posterImage
+				+ "]";
 	}
 	
 }

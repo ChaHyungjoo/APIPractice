@@ -6,6 +6,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
+import org.json.JSONObject;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
@@ -51,7 +52,7 @@ public class MovieInfoParsing {
         connection.setRequestMethod("GET");
         connection.setRequestProperty("X-Naver-Client-Id", clientId); //발급받은ID
         connection.setRequestProperty("X-Naver-Client-Secret", clientSecret);//발급받은PW
-//        connection.setRequestProperty("Content-Type", "application/json");
+        connection.setRequestProperty("Content-Type", "application/json");
         
         br = new BufferedReader(new InputStreamReader(connection.getInputStream(),"UTF-8"));
         
@@ -87,6 +88,34 @@ public class MovieInfoParsing {
 		json = br.readLine();
         
 		return json;
+	}
+	
+	//영화진흥위원회 에서 제공하는 OpenAPI JSON 파일을 String으로 변환하여 반환(showTm 가져오기)
+	public String KOBISJsonDataDetail(String movieCd) throws IOException {
+		String json = "";
+		BufferedReader br;
+		
+		String key = "354c88719a60cd3da952a4be7dbf367e";
+    	//String encodedKeyword = URLEncoder.encode(movieCd, "UTF-8");
+        String apiURL;
+        apiURL = "http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieInfo.json?key="
+        		+key+"&movieCd="+movieCd;
+
+        URL url = new URL(apiURL);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+        connection.setRequestProperty("Content-Type", "application/json");
+        
+        br = new BufferedReader(new InputStreamReader(connection.getInputStream(),"UTF-8"));
+		
+		json = br.readLine();
+		
+		JSONObject obj = new JSONObject(json);
+		JSONObject movieInfoResult = (JSONObject) obj.get("movieInfoResult");
+		JSONObject movieInfo = (JSONObject) movieInfoResult.get("movieInfo");
+		String showTm = movieInfo.getString("showTm");
+        
+		return showTm;
 	}
 	
 	

@@ -1,18 +1,18 @@
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.json.*;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
-public class test {
+public class KOBISParsingProgram {
 
 	public static void main(String[] args) {
-		
 		MovieInfoParsing parsing = new MovieInfoParsing();
 		ArrayList<MovieInfo> list = new ArrayList<>();
 		MovieInfo info;
 		
 		String json = "";
-		String keyword = "쏘우";
+		String keyword = "벤자민";
 		
 		//영화진흥위원회에서 가져온 영화 정보 json 파싱
 		try {
@@ -31,8 +31,12 @@ public class test {
 				info = new MovieInfo();		//영화 정보를 담을 객체 info를 생성
 				JSONObject entity = (JSONObject) movieList.get(i);		//movieList중 i번째 영화를 JSONObject형 객체 entity에 담아줌
 				
+				info.setMovieCd(entity.getString("movieCd"));
 				info.setMovieNm(entity.getString("movieNm"));		//키 값이 movieNm(영화제목)인 것의 값을 info에 셋팅
-				info.setMovieNmEn(entity.getString("movieNmEn"));
+				if(entity.getString("movieNmEn").equals("Package Screening"))
+					continue;
+				else
+					info.setMovieNmEn(entity.getString("movieNmEn"));
 				info.setOpenDt(entity.getString("openDt"));
 				info.setNationAlt(entity.getString("nationAlt"));
 				info.setGenreAlt(entity.getString("genreAlt"));
@@ -52,50 +56,6 @@ public class test {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-/*		//Naver에서 가져온 영화 정보 json 파싱
-		try {
-			json = parsing.NaverJsonData(keyword);
-			System.out.println(json);
-			
-			JSONObject obj = new JSONObject(json);
-			
-			JSONArray items = (JSONArray) obj.get("items");
-			for(int i=0; i<items.length(); i++) {
-				JSONObject entity = (JSONObject) items.get(i);
-				
-				for(int j=0; j<list.size(); j++) {
-					String title = entity.getString("title");
-					String subtitle = entity.getString("subtitle");
-					
-					if(subtitle.equals(list.get(j).getMovieNmEn())) {
-						String imgUrl = entity.getString("link");
-				    	String replacedImgUrl = imgUrl.replace("basic.nhn?code=", "photoViewPopup.nhn?movieCode=");
-				    	list.get(j).setPosterImage(replacedImgUrl);
-					}
-					
-				}
-				
-				info = new MovieInfo();
-				String imgUrl = entity.getString("link");
-		    	String replacedImgUrl = imgUrl.replace("basic.nhn?code=", "photoViewPopup.nhn?movieCode=");
-				info.setPosterImage(replacedImgUrl);
-				info.setMovieNm(entity.getString("title"));		//키 값이 movieNm(영화제목)인 것의 값을 info에 셋팅
-				info.setMovieNmEn(entity.getString("subtitle"));
-				info.setOpenDt(entity.getString("pubDate"));
-//				info.setNationAlt(entity.getString("nationAlt"));
-				info.setDirectors(entity.getString("director"));
-				list.add(info);
-			}
-			
-			for(MovieInfo m: list)
-				System.out.println(m.toString());
-			
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}*/
-		
 
 	}
 
