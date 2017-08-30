@@ -5,10 +5,11 @@ public class MovieInfo {
 	private String movieNmEn;		//영화명(영문)
 	private String showTm;			//상영시간
 	private String openDt;			//개봉연도
-	private String nationAlt;		//제작국가
-	private String genreAlt;		//장르
+	private String nations;			//제작국가
+	private String genres;			//장르
 	private String directors;		//감독
 	private String actors;			//배우
+	private String watchGradeNm;	//관람등급
 	private String backdropImage;	//스틸컷(배경크기) 이미지
 	private String posterImage;		//포스터 이미지
 	
@@ -53,20 +54,26 @@ public class MovieInfo {
 		this.openDt = openDt;
 	}
 	
-	public String getNationAlt() {
-		return nationAlt;
+	public String getNations() {
+		return nations;
 	}
 	
-	public void setNationAlt(String nationAlt) {
-		this.nationAlt = nationAlt;
+	public void setNations(String nations) {
+		if(this.nations==null)
+			this.nations = nations;
+		else 
+			this.nations = this.nations + nations;
 	}
 	
-	public String getGenreAlt() {
-		return genreAlt;
+	public String getGenres() {
+		return genres;
 	}
 	
-	public void setGenreAlt(String genreAlt) {
-		this.genreAlt = genreAlt;
+	public void setGenres(String genres) {
+		if(this.genres==null)
+			this.genres = genres;
+		else 
+			this.genres = this.genres + genres;
 	}
 	
 	public String getDirectors() {
@@ -77,7 +84,7 @@ public class MovieInfo {
 		if(this.directors==null)
 			this.directors = directors;
 		else 
-			this.directors = this.directors+directors;
+			this.directors = this.directors + directors;
 	}
 	
 	public String getActors() {
@@ -85,8 +92,20 @@ public class MovieInfo {
 	}
 
 	public void setActors(String actors) {
-		this.actors = actors;
+		if(this.actors==null)
+			this.actors = actors;
+		else 
+			this.actors = this.actors + actors;
 	}
+	
+	public String getWatchGradeNm() {
+		return watchGradeNm;
+	}
+
+	public void setWatchGradeNm(String watchGradeNm) {
+		this.watchGradeNm = watchGradeNm;
+	}
+
 
 	public String getBackdropImage() {
 		return backdropImage;
@@ -107,9 +126,11 @@ public class MovieInfo {
 	@Override
 	public String toString() {
 		return "MovieInfo [movieCd=" + movieCd + ", movieNm=" + movieNm + ", movieNmEn=" + movieNmEn + ", showTm="
-				+ showTm + ", openDt=" + openDt + ", nationAlt=" + nationAlt + ", genreAlt=" + genreAlt + ", directors="
-				+ directors + ", actors=" + actors + ", backdropImage=" + backdropImage + ", posterImage=" + posterImage
-				+ "]";
+				+ showTm + ", openDt=" + openDt + ", nations=" + nations + ", genres=" + genres + ", directors="
+				+ directors + ", actors=" + actors + ", watchGradeNm=" + watchGradeNm + ", backdropImage="
+				+ backdropImage + ", posterImage=" + posterImage + "]";
 	}
+
+	
 	
 }

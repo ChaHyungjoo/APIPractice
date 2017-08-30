@@ -38,8 +38,8 @@ public class KOBISParsingProgram {
 				else
 					info.setMovieNmEn(entity.getString("movieNmEn"));
 				info.setOpenDt(entity.getString("openDt"));
-				info.setNationAlt(entity.getString("nationAlt"));
-				info.setGenreAlt(entity.getString("genreAlt"));
+				info.setNations(entity.getString("nationAlt"));
+				info.setGenres(entity.getString("genreAlt"));
 				
 				JSONArray directors = (JSONArray) entity.get("directors");		//감독이 여러 명일 수도 있으므로 JSONArray형의 객체로 만듦
 				for(int j=0; j<directors.length(); j++) {

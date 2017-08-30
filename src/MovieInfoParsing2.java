@@ -6,18 +6,20 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
-public class MovieInfoParsing {
+public class MovieInfoParsing2 {
 	
 	//TMDB에서 제공하는 OpenAPI JSON 파일을 String으로 변환하여 반환
-	public String TMDBJsonData(String keyword) throws IOException {
+	public MovieInfo TMDBJsonData(MovieInfo info) throws IOException {
 		String json = "";
 		BufferedReader br;
 		
 		String key = "fc26b37628734575187d1be55c6a3c85";
+		String keyword = info.getMovieNmEn();
     	String encodedKeyword = URLEncoder.encode(keyword, "UTF-8");
         String apiURL;
         
@@ -33,19 +35,38 @@ public class MovieInfoParsing {
 		
 		json = br.readLine();
 		
-		return json;
+		JSONObject obj = new JSONObject(json);
+		JSONArray results = (JSONArray) obj.get("results");
+		//System.out.println(results.length());
+		
+		if(results.length()!=0) {
+			for (int i = 0; i < results.length(); i++) {
+				JSONObject entity = (JSONObject) results.get(0);
+				String title = entity.getString("title").toLowerCase();
+				String movieNmEn = info.getMovieNmEn().toLowerCase();
+				
+				if (title.equals(movieNmEn)) {
+					String imgUrl = entity.getString("backdrop_path");
+					info.setBackdropImage(imgUrl);
+				}
+			}
+		}
+		
+		return info;
 	}
 	
 	//Naver에서 제공하는 OpenAPI JSON 파일을 String으로 변환하여 반환
-	public String NaverJsonData(String keyword) throws IOException {
-		String _json = "";
+	public MovieInfo NaverJsonData(MovieInfo info) throws IOException {
+		String json = "";
 		BufferedReader br;
 		
 		String clientId = "aVyrhY81Hji8r3ApgQzx";
         String clientSecret = "e5vXcLz5J9";
+        String keyword = info.getMovieNmEn();
+        //System.out.println(keyword);
         String encodedKeyword = URLEncoder.encode(keyword, "UTF-8");
 		
-        String apiURL = "https://openapi.naver.com/v1/search/movie.json?query=" + encodedKeyword + "&display=100";
+        String apiURL = "https://openapi.naver.com/v1/search/movie.json?query=" + encodedKeyword;
 		
         URL url = new URL(apiURL);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -56,19 +77,39 @@ public class MovieInfoParsing {
         
         br = new BufferedReader(new InputStreamReader(connection.getInputStream(),"UTF-8"));
         
-        while((_json=_json+br.readLine()) != null) {
-        	if(_json.contains("null"))
+        while((json=json+br.readLine()) != null) {
+        	if(json.contains("null"))
         		break;
         }
         
-        String json = _json.replace("null", "");
+        json = json.replace("null", "");
+        json = json.replaceAll("<b>", "");
+        json = json.replaceAll("</b>", "");
         
-		return json;
+        JSONObject obj = new JSONObject(json);
+        JSONArray items = (JSONArray) obj.get("items");
+        for(int i=0; i<items.length(); i++) {
+        	JSONObject entity = (JSONObject) items.get(i);
+        	
+        	String subtitle = entity.getString("subtitle").toLowerCase();
+        	String movieNmEn = info.getMovieNmEn().toLowerCase();
+        	
+        	if(subtitle.equals(movieNmEn)) {
+        		String imgUrl = entity.getString("link");
+        		String replacedImgUrl = imgUrl.replace("basic.nhn?code=", "photoViewPopup.nhn?movieCode=");
+        		info.setPosterImage(replacedImgUrl);
+        	}
+        }
+        
+		return info;
 	}
 	
 	
-	//영화진흥위원회 에서 제공하는 OpenAPI JSON 파일을 String으로 변환하여 반환
-	public String KOBISJsonData(String keyword) throws IOException {
+	//영화진흥위원회 에서 제공하는 OpenAPI JSON 파일 파싱, 영화코드(movieCd) 가져오기
+	public ArrayList<MovieInfo> KOBISJsonData(String keyword) throws IOException {
+		ArrayList<MovieInfo> list = new ArrayList<>();
+		MovieInfo info;
+		
 		String json = "";
 		BufferedReader br;
 		
@@ -86,17 +127,33 @@ public class MovieInfoParsing {
         br = new BufferedReader(new InputStreamReader(connection.getInputStream(),"UTF-8"));
 		
 		json = br.readLine();
+		
+		JSONObject obj = new JSONObject(json);
+		JSONObject movieListResult = (JSONObject) obj.get("movieListResult");
+		JSONArray movieList = (JSONArray) movieListResult.get("movieList");
         
-		return json;
+		for(int i=0; i<movieList.length(); i++) {
+			info = new MovieInfo();
+			JSONObject entity = (JSONObject) movieList.get(i);
+			
+			String movieCd = entity.getString("movieCd");
+			info.setMovieCd(movieCd);
+			
+			if(entity.getString("movieNmEn").equals("Package Screening")) continue;
+			else KOBISJsonDataDetail(movieCd, info);
+			
+			list.add(info);
+		}
+		
+		return list;
 	}
 	
-	//영화진흥위원회 에서 제공하는 OpenAPI JSON 파일을 String으로 변환하여 반환(showTm 가져오기)
-	public String KOBISJsonDataDetail(String movieCd) throws IOException {
+	//가져온 영화코드(movieCd)로 영화 상세정보 가져오기
+	public MovieInfo KOBISJsonDataDetail(String movieCd, MovieInfo info) throws IOException {
 		String json = "";
 		BufferedReader br;
 		
 		String key = "354c88719a60cd3da952a4be7dbf367e";
-    	//String encodedKeyword = URLEncoder.encode(movieCd, "UTF-8");
         String apiURL;
         apiURL = "http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieInfo.json?key="
         		+key+"&movieCd="+movieCd;
@@ -109,16 +166,59 @@ public class MovieInfoParsing {
         br = new BufferedReader(new InputStreamReader(connection.getInputStream(),"UTF-8"));
 		
 		json = br.readLine();
-		
+        
 		JSONObject obj = new JSONObject(json);
 		JSONObject movieInfoResult = (JSONObject) obj.get("movieInfoResult");
 		JSONObject movieInfo = (JSONObject) movieInfoResult.get("movieInfo");
-		String showTm = movieInfo.getString("showTm");
-        
-		return showTm;
+		
+		info.setMovieNm(movieInfo.getString("movieNm"));
+		info.setMovieNmEn(movieInfo.getString("movieNmEn"));
+		info.setShowTm(movieInfo.getString("showTm"));
+		info.setOpenDt(movieInfo.getString("openDt"));
+		
+		JSONArray nations = (JSONArray) movieInfo.get("nations");
+		for(int i=0; i<nations.length(); i++) {
+			JSONObject nation = (JSONObject) nations.get(i);
+			info.setNations(nation.getString("nationNm")+"|");
+		}
+		
+		JSONArray genres = (JSONArray) movieInfo.get("genres");
+		for(int i=0; i<genres.length(); i++) {
+			JSONObject genre = (JSONObject) genres.get(i);
+			info.setGenres(genre.getString("genreNm")+"|");
+		}
+		
+		JSONArray directors = (JSONArray) movieInfo.get("directors");
+		for(int i=0; i<directors.length(); i++) {
+			JSONObject director = (JSONObject) directors.get(i);
+			info.setDirectors(director.getString("peopleNm")+"|");
+		}
+		
+		JSONArray actors = (JSONArray) movieInfo.get("actors");
+		for(int i=0; i<actors.length(); i++) {
+			if(i==5) break;
+			JSONObject actor = (JSONObject) actors.get(i);
+			info.setActors(actor.getString("peopleNm")+"|");
+		}
+		
+		JSONArray audits = (JSONArray) movieInfo.get("audits");
+		for(int i=0; i<audits.length(); i++) {
+			JSONObject audit = (JSONObject) audits.get(i);
+			info.setWatchGradeNm(audit.getString("watchGradeNm"));
+		}
+		
+		NaverJsonData(info);
+		TMDBJsonData(info);
+		
+		return info;
 	}
 	
 	
+	
+	
+	
+	
+	//====================================================================================================================================
     //XmlPullParser를 이용하여 영화진응위원회 에서 제공하는 OpenAPI XML 파일 파싱하기(parsing)
     public ArrayList<MovieInfo> getXmlData(String keyword) throws IOException {
     	boolean inMovieNm = false, inOpenDt = false, inNationAlt = false, inGenreAlt = false;

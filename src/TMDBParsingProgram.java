@@ -12,11 +12,11 @@ public class TMDBParsingProgram {
 		MovieInfo info;
 		
 		String json = "";
-		String keyword = "벤자민";
+		String keyword = "스파이더맨";
 		
 		try {
 			json = parsing.TMDBJsonData(keyword);
-			// System.out.println(json);
+			 //System.out.println(json);
 
 			JSONObject obj = new JSONObject(json);
 			JSONArray results = (JSONArray) obj.get("results");
