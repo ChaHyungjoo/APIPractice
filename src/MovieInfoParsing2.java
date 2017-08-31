@@ -37,7 +37,7 @@ public class MovieInfoParsing2 {
 		
 		JSONObject obj = new JSONObject(json);
 		JSONArray results = (JSONArray) obj.get("results");
-		//System.out.println(results.length());
+		//System.out.println(results.length()+" ");
 		
 		if(results.length()!=0) {
 			for (int i = 0; i < results.length(); i++) {
@@ -46,8 +46,10 @@ public class MovieInfoParsing2 {
 				String movieNmEn = info.getMovieNmEn().toLowerCase();
 				
 				if (title.equals(movieNmEn)) {
-					String imgUrl = entity.getString("backdrop_path");
-					info.setBackdropImage(imgUrl);
+					/*String backdrop_path = entity.getString("backdrop_path");
+					info.setBackdropImage(backdrop_path);*/
+					info.setBackdropImage(entity.optString("backdrop_path"));
+					
 				}
 			}
 		}
@@ -95,9 +97,9 @@ public class MovieInfoParsing2 {
         	String movieNmEn = info.getMovieNmEn().toLowerCase();
         	
         	if(subtitle.equals(movieNmEn)) {
-        		String imgUrl = entity.getString("link");
-        		String replacedImgUrl = imgUrl.replace("basic.nhn?code=", "photoViewPopup.nhn?movieCode=");
-        		info.setPosterImage(replacedImgUrl);
+        		String link = entity.getString("link");
+        		String replacedLink = link.replace("basic.nhn?code=", "photoViewPopup.nhn?movieCode=");
+        		info.setPosterImage(replacedLink);
         	}
         }
         

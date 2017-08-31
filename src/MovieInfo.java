@@ -112,7 +112,10 @@ public class MovieInfo {
 	}
 	
 	public void setBackdropImage(String backdropImage) {
-		this.backdropImage = "https://image.tmdb.org/t/p/w1920"+backdropImage;
+		if(backdropImage.length()==0)
+			this.backdropImage = null;
+		else
+			this.backdropImage = "https://image.tmdb.org/t/p/w1920"+backdropImage;
 	}
 	
 	public String getPosterImage() {
