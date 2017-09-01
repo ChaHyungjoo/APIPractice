@@ -12,7 +12,8 @@ public class KOBISParsingProgram {
 		MovieInfo info;
 		
 		String json = "";
-		String keyword = "벤자민";
+		String keyword = "타이타닉";
+		String key = "354c88719a60cd3da952a4be7dbf367e";
 		
 		//영화진흥위원회에서 가져온 영화 정보 json 파싱
 		try {
@@ -37,6 +38,7 @@ public class KOBISParsingProgram {
 					continue;
 				else
 					info.setMovieNmEn(entity.getString("movieNmEn"));
+				info.setPrdtYear(entity.getString("prdtYear"));
 				info.setOpenDt(entity.getString("openDt"));
 				info.setNations(entity.getString("nationAlt"));
 				info.setGenres(entity.getString("genreAlt"));

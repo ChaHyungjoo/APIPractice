@@ -14,7 +14,8 @@ public class TMDBParsingProgram {
 		MovieInfo info;
 		
 		String json = "";
-		String keyword = "titanic";
+		String keyword = "your name.";
+		String key = "fc26b37628734575187d1be55c6a3c85";
 		
 		try {
 			json = parsing.TMDBJsonData(keyword);
@@ -30,6 +31,7 @@ public class TMDBParsingProgram {
 					JSONObject entity = (JSONObject) results.get(i);
 					
 					info.setMovieNmEn(entity.getString("title"));
+					info.setPrdtYear(entity.getString("release_date"));
 					String posterImage = "https://image.tmdb.org/t/p/w1920" + entity.optString("poster_path");
 					info.setPosterImage(posterImage);
 					info.setBackdropImage(entity.optString("backdrop_path"));

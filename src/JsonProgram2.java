@@ -10,7 +10,7 @@ public class JsonProgram2 {
 		MovieInfoParsing2 parsing = new MovieInfoParsing2();
 		ArrayList<MovieInfo> list = new ArrayList<>();
 		
-		String keyword = "타이타닉";
+		String keyword = "titanic";
 		
 		try {
 			list = parsing.KOBISJsonData(keyword);

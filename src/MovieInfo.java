@@ -4,6 +4,7 @@ public class MovieInfo {
 	private String movieNm;			//영화명(국문)
 	private String movieNmEn;		//영화명(영문)
 	private String showTm;			//상영시간
+	private String prdtYear;		//제작연도
 	private String openDt;			//개봉연도
 	private String nations;			//제작국가
 	private String genres;			//장르
@@ -44,6 +45,14 @@ public class MovieInfo {
 
 	public void setShowTm(String showTm) {
 		this.showTm = showTm;
+	}
+
+	public String getPrdtYear() {
+		return prdtYear;
+	}
+
+	public void setPrdtYear(String prdtYear) {
+		this.prdtYear = prdtYear;
 	}
 
 	public String getOpenDt() {
@@ -129,11 +138,9 @@ public class MovieInfo {
 	@Override
 	public String toString() {
 		return "MovieInfo [movieCd=" + movieCd + ", movieNm=" + movieNm + ", movieNmEn=" + movieNmEn + ", showTm="
-				+ showTm + ", openDt=" + openDt + ", nations=" + nations + ", genres=" + genres + ", directors="
-				+ directors + ", actors=" + actors + ", watchGradeNm=" + watchGradeNm + ", backdropImage="
-				+ backdropImage + ", posterImage=" + posterImage + "]";
+				+ showTm + ", prdtYear=" + prdtYear + ", openDt=" + openDt + ", nations=" + nations + ", genres="
+				+ genres + ", directors=" + directors + ", actors=" + actors + ", watchGradeNm=" + watchGradeNm
+				+ ", backdropImage=" + backdropImage + ", posterImage=" + posterImage + "]";
 	}
-
-	
 	
 }

@@ -12,7 +12,7 @@ public class NaverParsingProgram {
 		MovieInfo info;
 		
 		String json = "";
-		String keyword = "The Lord of the Rings: The Return of the King";
+		String keyword = "너의 이름은";
 		
 		//Naver에서 가져온 영화 정보 json 파싱
 		try {
