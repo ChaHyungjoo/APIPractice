@@ -12,7 +12,7 @@ public class KOBISParsingProgram {
 		MovieInfo info;
 		
 		String json = "";
-		String keyword = "타이타닉";
+		String keyword = "캐리비안의 해적: 망자의 함";
 		String key = "354c88719a60cd3da952a4be7dbf367e";
 		
 		//영화진흥위원회에서 가져온 영화 정보 json 파싱

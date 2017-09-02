@@ -22,7 +22,7 @@ public class MovieInfoParsing {
         String apiURL;
         
         apiURL = "https://api.themoviedb.org/3/search/movie?"
-        		+ "api_key=" + key + "&query=" + encodedKeyword + "&include_adult=false";	//해당연도의 영화를 알고싶으면 맨끝에 &year=2017 조건을 추가
+        		+ "api_key=" + key + "&language=ko&query=" + encodedKeyword + "&include_adult=false";	//해당연도의 영화를 알고싶으면 맨끝에 &year=2017 조건을 추가
         
         URL url = new URL(apiURL);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -76,7 +76,7 @@ public class MovieInfoParsing {
     	String encodedKeyword = URLEncoder.encode(keyword, "UTF-8");
         String apiURL;
         apiURL = "http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieList.json?key="
-        		+key+"&movieNm="+encodedKeyword;
+        		+key+"&movieNm="+encodedKeyword + "&itemPerPage=100";
 
         URL url = new URL(apiURL);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();

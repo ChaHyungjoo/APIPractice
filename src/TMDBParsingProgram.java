@@ -14,12 +14,12 @@ public class TMDBParsingProgram {
 		MovieInfo info;
 		
 		String json = "";
-		String keyword = "your name.";
+		String keyword = "캐리비안의 해적";
 		String key = "fc26b37628734575187d1be55c6a3c85";
 		
 		try {
 			json = parsing.TMDBJsonData(keyword);
-			 //System.out.println(json);
+			 System.out.println(json);
 
 			JSONObject obj = new JSONObject(json);
 			JSONArray results = (JSONArray) obj.get("results");
@@ -30,10 +30,11 @@ public class TMDBParsingProgram {
 					info = new MovieInfo();
 					JSONObject entity = (JSONObject) results.get(i);
 					
-					info.setMovieNmEn(entity.getString("title"));
+					info.setMovieId(entity.getInt("id"));
+					info.setMovieNm(entity.getString("title"));
+					info.setMovieNmEn(entity.getString("original_title"));
 					info.setPrdtYear(entity.getString("release_date"));
-					String posterImage = "https://image.tmdb.org/t/p/w1920" + entity.optString("poster_path");
-					info.setPosterImage(posterImage);
+					info.setPosterImage(entity.optString("poster_path"));
 					info.setBackdropImage(entity.optString("backdrop_path"));
 					
 					list.add(info);
