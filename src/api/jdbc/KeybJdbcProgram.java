@@ -10,17 +10,19 @@ public class KeybJdbcProgram {
 		MovieInfo movieInfo = new MovieInfo();
 		KeybMovieJdbc jdbc = new KeybMovieJdbc();
 		
-		String title = "택시운전사";
+		String title = "타이타닉";
 		
 		try {
 			
 			movieList = movieInfo.movieData(title);
+			//movieList = movieInfo.movieData();
 			
-			int n = jdbc.input(movieList);
-			System.out.println(n);
+			//int n = jdbc.input(movieList);
 			
 			for(Movie m : movieList)
 				System.out.println(m.toString());
+			
+			//System.out.println(n);
 			
 		} catch (IOException e) {
 			e.printStackTrace();

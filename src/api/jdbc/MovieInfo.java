@@ -12,7 +12,7 @@ import org.json.JSONObject;
 
 public class MovieInfo {
 	
-	//�쁺�솕吏꾪씎�쐞�썝�쉶 �뿉�꽌 �젣怨듯븯�뒗 OpenAPI JSON �뙆�씪 �뙆�떛, �쁺�솕肄붾뱶(movieCd) + �긽�꽭�젙蹂� + �씠誘몄� 遺숈뿬�꽌 由ъ뒪�듃 援ы쁽�빐�꽌 諛섑솚
+	//占쎌겫占쎌넅筌욊쑵�뵊占쎌맄占쎌뜚占쎌돳 占쎈퓠占쎄퐣 占쎌젫�⑤벏釉�占쎈뮉 OpenAPI JSON 占쎈솁占쎌뵬 占쎈솁占쎈뼓, 占쎌겫占쎌넅�굜遺얜굡(movieCd) + 占쎄맒占쎄쉭占쎌젟癰귨옙 + 占쎌뵠沃섎챷占� �겫�늿肉э옙苑� �뵳�딅뮞占쎈뱜 �뤃�뗭겱占쎈퉸占쎄퐣 獄쏆꼹�넎
 	public ArrayList<Movie> movieData(String keyword) throws IOException {
 		ArrayList<Movie> list = new ArrayList<>();
 		Movie movie;
@@ -21,11 +21,16 @@ public class MovieInfo {
 		BufferedReader br;
 		
 		String key = "febb1987881018460c2e26f49f1a23b1";
-					//형주: febb1987881018460c2e26f49f1a23b1 354c88719a60cd3da952a4be7dbf367e
+					//hj: febb1987881018460c2e26f49f1a23b1 354c88719a60cd3da952a4be7dbf367e
+					//goni: 29aef06471a3c09def2221de8453507b 25d353a783cfd9d3eec15b172252ffb6
+		
     	String encodedKeyword = URLEncoder.encode(keyword, "UTF-8");
         String apiURL;
         apiURL = "http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieList.json?key="
         		+ key + "&movieNm=" + encodedKeyword + "&itemPerPage=100";
+        
+        /*apiURL = "http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieList.json?key="
+        		+ key + "&openStartDt=2017&itemPerPage=1000&curPage=2";	*/	//&curPage=2
 
         URL url = new URL(apiURL);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -64,13 +69,13 @@ public class MovieInfo {
 	}
 	
 	
-	//媛��졇�삩 �쁺�솕肄붾뱶(movieCd)濡� �쁺�솕 �긽�꽭�젙蹂� + �꽕�씠踰� �쁺�솕 �룷�뒪�꽣 �씠誘몄� + TMDB �쁺�솕 �뒪�떥而� �씠誘몄� 遺숈씠湲�
+	//揶쏉옙占쎌죬占쎌궔 占쎌겫占쎌넅�굜遺얜굡(movieCd)嚥∽옙 占쎌겫占쎌넅 占쎄맒占쎄쉭占쎌젟癰귨옙 + 占쎄퐬占쎌뵠甕곤옙 占쎌겫占쎌넅 占쎈７占쎈뮞占쎄숲 占쎌뵠沃섎챷占� + TMDB 占쎌겫占쎌넅 占쎈뮞占쎈뼢�뚳옙 占쎌뵠沃섎챷占� �겫�늿�뵠疫뀐옙
 	public Movie movieDataDetail(Movie movie, String movieCd) throws IOException {
 		String json = "";
 		BufferedReader br;
 		
 		String key = "febb1987881018460c2e26f49f1a23b1";
-					//형주: febb1987881018460c2e26f49f1a23b1 354c88719a60cd3da952a4be7dbf367e
+					//�삎二�: febb1987881018460c2e26f49f1a23b1 354c88719a60cd3da952a4be7dbf367e
         String apiURL;
         apiURL = "http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieInfo.json?key="
         		+ key + "&movieCd=" + movieCd;
@@ -133,7 +138,7 @@ public class MovieInfo {
 		movie = tmdbMovieData(movie, prdtYear, movieNmEn);
 		
 		if(movie.getPosterImage()==null || movie.getBackdropImage()==null || movie.getOverView()==null)
-			movie = tmdbMovieData(movie, prdtYear, movieNm);
+			movie = tmdbMovieData(movie, prdtYear, movieNmEn);
 		
 		br.close();
 		connection.disconnect();
@@ -142,22 +147,24 @@ public class MovieInfo {
 	}
 
 	
-	//TMDB�뿉�꽌 �젣怨듯븯�뒗 OpenAPI JSON �뙆�씪�쓣 String�쑝濡� 蹂��솚�븯�뿬 諛섑솚
+	//TMDB占쎈퓠占쎄퐣 占쎌젫�⑤벏釉�占쎈뮉 OpenAPI JSON 占쎈솁占쎌뵬占쎌뱽 String占쎌몵嚥∽옙 癰귨옙占쎌넎占쎈릭占쎈연 獄쏆꼹�넎
 	public Movie tmdbMovieData(Movie movie, String prdtYear, String movieNmEn) throws IOException {
 		String json = "";
 		BufferedReader br;
 		
 		String key = "fc26b37628734575187d1be55c6a3c85";
-					//형주: fc26b37628734575187d1be55c6a3c85
+					//�삎二�: fc26b37628734575187d1be55c6a3c85
 		String keyword = movieNmEn.toLowerCase();
 		if(keyword.length()==0)
         	keyword = movie.getMovieNm();
+		
+		
     	String encodedKeyword = URLEncoder.encode(keyword, "UTF-8");
         String apiURL;
         
         apiURL = "https://api.themoviedb.org/3/search/movie?"
         		+ "api_key=" + key + "&language=ko&query=" + encodedKeyword 
-        		+ "&include_adult=false";	//�빐�떦�뿰�룄�쓽 �쁺�솕瑜� �븣怨좎떢�쑝硫� 留⑤걹�뿉 &year=2017 議곌굔�쓣 異붽�
+        		+ "&include_adult=false";	//占쎈퉸占쎈뼣占쎈염占쎈즲占쎌벥 占쎌겫占쎌넅�몴占� 占쎈르�⑥쥙�뼟占쎌몵筌롳옙 筌띯뫀嫄뱄옙肉� &year=2017 鈺곌퀗援뷂옙�뱽 �빊遺쏙옙
         
         URL url = new URL(apiURL);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -305,7 +312,7 @@ public class MovieInfo {
 	
 	
 	
-	/*	//Naver�뿉�꽌 �젣怨듯븯�뒗 OpenAPI JSON �뙆�씪�쓣 String�쑝濡� 蹂��솚�븯�뿬 諛섑솚
+	/*	//Naver占쎈퓠占쎄퐣 占쎌젫�⑤벏釉�占쎈뮉 OpenAPI JSON 占쎈솁占쎌뵬占쎌뱽 String占쎌몵嚥∽옙 癰귨옙占쎌넎占쎈릭占쎈연 獄쏆꼹�넎
 	public MovieInfo naverMovieData(MovieInfo movie, String prdtYear) throws IOException {
 		String json = "";
 		BufferedReader br;
@@ -322,8 +329,8 @@ public class MovieInfo {
         URL url = new URL(apiURL);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
-        connection.setRequestProperty("X-Naver-Client-Id", clientId); //諛쒓툒諛쏆�ID
-        connection.setRequestProperty("X-Naver-Client-Secret", clientSecret);//諛쒓툒諛쏆�PW
+        connection.setRequestProperty("X-Naver-Client-Id", clientId); //獄쏆뮄�닋獄쏆룇占폠D
+        connection.setRequestProperty("X-Naver-Client-Secret", clientSecret);//獄쏆뮄�닋獄쏆룇占폩W
         connection.setRequestProperty("Content-Type", "application/json");
         
         br = new BufferedReader(new InputStreamReader(connection.getInputStream(),"UTF-8"));
@@ -358,14 +365,14 @@ public class MovieInfo {
 	}*/
 	
 	//====================================================================================================================================
-/*    //XmlPullParser瑜� �씠�슜�븯�뿬 �쁺�솕吏꾩쓳�쐞�썝�쉶 �뿉�꽌 �젣怨듯븯�뒗 OpenAPI XML �뙆�씪 �뙆�떛�븯湲�(parsing)
+/*    //XmlPullParser�몴占� 占쎌뵠占쎌뒠占쎈릭占쎈연 占쎌겫占쎌넅筌욊쑴�벓占쎌맄占쎌뜚占쎌돳 占쎈퓠占쎄퐣 占쎌젫�⑤벏釉�占쎈뮉 OpenAPI XML 占쎈솁占쎌뵬 占쎈솁占쎈뼓占쎈릭疫뀐옙(parsing)
     public ArrayList<MovieInfo> getXmlData(String keyword) throws IOException {
     	boolean inMovieNm = false, inOpenDt = false, inNationAlt = false, inGenreAlt = false;
         String movieNm = "", openDt = "", nationAlt = "", genreAlt = "";
     	
     	ArrayList<MovieInfo> list = new ArrayList<MovieInfo>();
     	MovieInfo info;
-    	//http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieList.xml?key=354c88719a60cd3da952a4be7dbf367e&movieNm=異붽꺽�옄
+    	//http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieList.xml?key=354c88719a60cd3da952a4be7dbf367e&movieNm=�빊遺쎄봄占쎌쁽
     	String key = "354c88719a60cd3da952a4be7dbf367e";
     	String encodedKeyword = URLEncoder.encode(keyword, "UTF-8");
         String apiURL;
@@ -380,7 +387,7 @@ public class MovieInfo {
         try {
             XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
             XmlPullParser xpp = factory.newPullParser();
-            xpp.setInput(connection.getInputStream(), "UTF-8");  //xml �엯�젰諛쏄린
+            xpp.setInput(connection.getInputStream(), "UTF-8");  //xml 占쎌뿯占쎌젾獄쏆룄由�
 
             String tag;
             xpp.next();
@@ -393,9 +400,9 @@ public class MovieInfo {
                     case XmlPullParser.START_DOCUMENT:
                         break;
 
-                    case XmlPullParser.START_TAG:		//1. start�깭洹몃�� �씫�쑝硫댁꽌 �빐�떦�깭洹몃㈃ 蹂��닔 flag瑜� true濡� 諛붽퓭以�
+                    case XmlPullParser.START_TAG:		//1. start占쎄묶域밸챶占쏙옙 占쎌뵭占쎌몵筌롫똻苑� 占쎈퉸占쎈뼣占쎄묶域밸챶�늺 癰귨옙占쎈땾 flag�몴占� true嚥∽옙 獄쏅떽�벊餓ο옙
 //                    	System.out.println("1: start tag");
-                        tag = xpp.getName();    //�깭洹� �씠由� �뼸�뼱�삤湲�
+                        tag = xpp.getName();    //占쎄묶域뱄옙 占쎌뵠�뵳占� 占쎈섯占쎈선占쎌궎疫뀐옙
 //                        System.out.println("tag: "+tag);
                         
                         if (tag.equals("movieNm")) {
@@ -416,37 +423,37 @@ public class MovieInfo {
 
                         break;
 
-                    case XmlPullParser.TEXT:		//2. �깭洹몄쓽 text瑜� �엫�떆蹂��닔�뿉 �꽔�뼱以�
+                    case XmlPullParser.TEXT:		//2. 占쎄묶域밸챷�벥 text�몴占� 占쎌뿫占쎈뻻癰귨옙占쎈땾占쎈퓠 占쎄퐫占쎈선餓ο옙
 //                    	System.out.println("2: text");
                         if (inMovieNm) {
-//                        	System.out.println("2-1: text �씫�뼱�삤湲�");
+//                        	System.out.println("2-1: text 占쎌뵭占쎈선占쎌궎疫뀐옙");
                         	movieNm = xpp.getText();
                             inMovieNm = false;
                         }
                         if (inOpenDt) {
-//                        	System.out.println("2-2: text �씫�뼱�삤湲�");
+//                        	System.out.println("2-2: text 占쎌뵭占쎈선占쎌궎疫뀐옙");
                         	openDt = xpp.getText();
                             inOpenDt = false;
                         }
                         if (inNationAlt) {
-//                        	System.out.println("2-3: text �씫�뼱�삤湲�");
+//                        	System.out.println("2-3: text 占쎌뵭占쎈선占쎌궎疫뀐옙");
                         	nationAlt = xpp.getText();
                             inNationAlt = false;
                         }
                         if (inGenreAlt) {
-//                        	System.out.println("2-4: text �씫�뼱�삤湲�");
+//                        	System.out.println("2-4: text 占쎌뵭占쎈선占쎌궎疫뀐옙");
                         	genreAlt = xpp.getText();
                             inGenreAlt = false;
                         }
 
                         break;
 
-                    case XmlPullParser.END_TAG:		//3. �쁺�솕 1媛쒓� �걹�굹�뒗 �깭洹�(movie)瑜� 留뚮굹硫� �엫�떆蹂��닔�씠 �엳�뒗 媛믪쓣 紐쎈븙 �겢�옒�뒪�뿉 �꽔怨� list諛곗뿴�뿉 異붽��븿
+                    case XmlPullParser.END_TAG:		//3. 占쎌겫占쎌넅 1揶쏆뮄占� 占쎄국占쎄돌占쎈뮉 占쎄묶域뱄옙(movie)�몴占� 筌띾슢援뱄쭖占� 占쎌뿫占쎈뻻癰귨옙占쎈땾占쎌뵠 占쎌뿳占쎈뮉 揶쏅�れ뱽 筌륁럥釉� 占쎄깻占쎌삋占쎈뮞占쎈퓠 占쎄퐫�⑨옙 list獄쏄퀣肉댐옙肉� �빊遺쏙옙占쎈맙
 //                    	System.out.println("3: end tag");
-                        tag = xpp.getName();    //�뀒洹� �씠由� �뼸�뼱�삤湲�
+                        tag = xpp.getName();    //占쎈�믤뉩占� 占쎌뵠�뵳占� 占쎈섯占쎈선占쎌궎疫뀐옙
 //                        System.out.println("tag: "+tag+"\n==============");
                         if (tag.equals("movie")) {
-//                        	System.out.println("3-1: 由ъ뒪�듃�뿉 �떞湲�\n********************************************************");
+//                        	System.out.println("3-1: �뵳�딅뮞占쎈뱜占쎈퓠 占쎈뼖疫뀐옙\n********************************************************");
                         	info = new MovieInfo();
                             info.setMovieNm(movieNm);
                             info.setOpenDt(openDt);

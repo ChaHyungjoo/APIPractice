@@ -37,7 +37,7 @@ public class MovieJdbc {
 			      st.setString(9, movieList.get(i).getDirectors());
 			      st.setString(10, movieList.get(i).getActors());
 			      st.setString(11, movieList.get(i).getWatchGradeNm());
-			      st.setString(12, movieList.get(i).getMovieCd());
+			      st.setInt(12, movieList.get(i).getMovieId());
 			      st.setString(13, movieList.get(i).getBackdropImage());
 			      st.setString(14, movieList.get(i).getPosterImage());
 			      st.setString(15, movieList.get(i).getOverView());

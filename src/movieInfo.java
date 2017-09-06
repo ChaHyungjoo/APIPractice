@@ -149,6 +149,7 @@ public class movieInfo {
 		BufferedReader br;
 		
 		String key = "fc26b37628734575187d1be55c6a3c85";
+		
 		String keyword = movieNmEn.toLowerCase();
 		if(keyword.length()==0)
         	keyword = movie.getMovieNm();

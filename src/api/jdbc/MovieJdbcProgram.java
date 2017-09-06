@@ -12,7 +12,7 @@ public class MovieJdbcProgram {
 		
 		String title = "¾ÆÄí¾Æ";
 		
-		try {
+		/*try {
 			
 			movieList = movieInfo.movieData(title);
 			
@@ -21,7 +21,7 @@ public class MovieJdbcProgram {
 			
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		}*/
 
 	}
 

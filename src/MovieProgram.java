@@ -10,7 +10,7 @@ public class MovieProgram {
 		movieInfo movieInfo = new movieInfo();
 		ArrayList<Movie> list = new ArrayList<>();
 		
-		String keyword = "±Ë±§ºÆ";
+		String keyword = "≈∏¿Ã≈∏¥–";
 		
 		try {
 			list = movieInfo.movieData(keyword);
