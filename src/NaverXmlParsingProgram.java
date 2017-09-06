@@ -8,12 +8,12 @@ import java.util.Calendar;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
-public class ImgParsingProgram {
+public class NaverXmlParsingProgram {
    
     //영화이미지를 가져오기 위한 naver open api 메소드
-    static ArrayList<MovieInfo> naverXmlData(String keyword) throws IOException {
-    	ArrayList<MovieInfo> list = new ArrayList<>();
-    	MovieInfo info;
+    static ArrayList<Movie> naverXmlData(String keyword) throws IOException {
+    	ArrayList<Movie> list = new ArrayList<>();
+    	Movie info;
     	boolean inImgUrl = false;
     	String imgUrl = "";
     	String replacedImgUrl = "";
@@ -72,7 +72,7 @@ public class ImgParsingProgram {
                     case XmlPullParser.END_TAG:
                         tag = xpp.getName();    //테그 이름 얻어오기
                         if (tag.equals("item")) {
-                        	info = new MovieInfo();
+                        	info = new Movie();
                         	info.setPosterImage(replacedImgUrl);
                         	//info.setImgLink(imgUrl);
                         	list.add(info);
@@ -94,11 +94,11 @@ public class ImgParsingProgram {
     
    public static void main(String[] args) throws IOException {
 	   
-	   ArrayList<MovieInfo> list = new ArrayList<>();
+	   ArrayList<Movie> list = new ArrayList<>();
 	   
 	   list = naverXmlData("헤이트풀8");
 	   
-	   for(MovieInfo info: list)
+	   for(Movie info: list)
 		   System.out.println(info.getPosterImage());
 	   
 

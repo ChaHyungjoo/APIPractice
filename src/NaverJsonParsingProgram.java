@@ -4,19 +4,19 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class NaverParsingProgram {
+public class NaverJsonParsingProgram {
 
 	public static void main(String[] args) {
-		MovieInfoParsing parsing = new MovieInfoParsing();
-		ArrayList<MovieInfo> list = new ArrayList<>();
-		MovieInfo info;
+		JsonParsing parsing = new JsonParsing();
+		ArrayList<Movie> list = new ArrayList<>();
+		Movie info;
 		
 		String json = "";
 		String keyword = "추격자";
 		
 		//Naver에서 가져온 영화 정보 json 파싱
 		try {
-			json = parsing.NaverJsonData(keyword);
+			json = parsing.naverMovieData(keyword);
 			System.out.println(json);
 			
 			JSONObject obj = new JSONObject(json);
@@ -25,7 +25,7 @@ public class NaverParsingProgram {
 			for(int i=0; i<items.length(); i++) {
 				JSONObject entity = (JSONObject) items.get(i);
 				
-				info = new MovieInfo();
+				info = new Movie();
 				String imgUrl = entity.getString("link");
 		    	String replacedImgUrl = imgUrl.replace("basic.nhn?code=", "photoViewPopup.nhn?movieCode=");
 				info.setPosterImage(replacedImgUrl);
@@ -37,7 +37,7 @@ public class NaverParsingProgram {
 				list.add(info);
 			}
 			
-			for(MovieInfo m: list)
+			for(Movie m: list)
 				System.out.println(m.toString());
 			
 			

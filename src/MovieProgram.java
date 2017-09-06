@@ -3,19 +3,19 @@ import java.util.ArrayList;
 
 import org.json.*;
 
-public class JsonProgram2 {
+public class MovieProgram {
 
 	public static void main(String[] args) {
 		
-		MovieInfoParsing2 parsing = new MovieInfoParsing2();
-		ArrayList<MovieInfo> list = new ArrayList<>();
+		movieInfo movieInfo = new movieInfo();
+		ArrayList<Movie> list = new ArrayList<>();
 		
-		String keyword = "¹Ì´Ï¾ðÁî";
+		String keyword = "±è±¤¼®";
 		
 		try {
-			list = parsing.movieData(keyword);
+			list = movieInfo.movieData(keyword);
 			
-			for (MovieInfo m : list)
+			for (Movie m : list)
 				System.out.println(m.toString());
 			
 		} catch (IOException e) {

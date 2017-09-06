@@ -1,5 +1,5 @@
 
-public class MovieInfo {
+public class Movie {
 	//----영화진흥위원회(kobis)에서 가져오는 부분-----------------------------
 	private String movieCd;			//영화코드(영화진흥위원회에 등록된 영화)
 	private String movieNm;			//영화명(국문)

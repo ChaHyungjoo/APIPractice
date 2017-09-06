@@ -1,3 +1,4 @@
+package api.jdbc;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -8,20 +9,19 @@ import java.util.ArrayList;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserFactory;
 
-public class MovieInfoParsing2 {
+public class MovieInfo {
 	
-	//¿µÈ­ÁøÈïÀ§¿øÈ¸ ¿¡¼­ Á¦°øÇÏ´Â OpenAPI JSON ÆÄÀÏ ÆÄ½Ì, ¿µÈ­ÄÚµå(movieCd) + »ó¼¼Á¤º¸ + ÀÌ¹ÌÁö ºÙ¿©¼­ ¸®½ºÆ® ±¸ÇöÇØ¼­ ¹İÈ¯
-	public ArrayList<MovieInfo> movieData(String keyword) throws IOException {
-		ArrayList<MovieInfo> list = new ArrayList<>();
-		MovieInfo movie;
+	//ï¿½ìºï¿½ì†•ï§ê¾ªì”ï¿½ìï¿½ìï¿½ì‰¶ ï¿½ë¿‰ï¿½ê½Œ ï¿½ì £æ€¨ë“¯ë¸¯ï¿½ë’— OpenAPI JSON ï¿½ë™†ï¿½ì”ª ï¿½ë™†ï¿½ë–›, ï¿½ìºï¿½ì†•è‚„ë¶¾ë±¶(movieCd) + ï¿½ê¸½ï¿½ê½­ï¿½ì ™è¹‚ï¿½ + ï¿½ì” èª˜ëª„ï¿½ éºìˆˆë¿¬ï¿½ê½Œ ç”±ÑŠë’ªï¿½ë“ƒ æ´Ñ‹ì½ï¿½ë¹ï¿½ê½Œ è«›ì„‘ì†š
+	public ArrayList<Movie> movieData(String keyword) throws IOException {
+		ArrayList<Movie> list = new ArrayList<>();
+		Movie movie;
 		
 		String json = "";
 		BufferedReader br;
 		
-		String key = "354c88719a60cd3da952a4be7dbf367e";
+		String key = "febb1987881018460c2e26f49f1a23b1";
+					//í˜•ì£¼: febb1987881018460c2e26f49f1a23b1 354c88719a60cd3da952a4be7dbf367e
     	String encodedKeyword = URLEncoder.encode(keyword, "UTF-8");
         String apiURL;
         apiURL = "http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieList.json?key="
@@ -41,7 +41,7 @@ public class MovieInfoParsing2 {
 		JSONArray movieList = (JSONArray) movieListResult.get("movieList");
         
 		for(int i=0; i<movieList.length(); i++) {
-			movie = new MovieInfo();
+			movie = new Movie();
 			JSONObject entity = (JSONObject) movieList.get(i);
 			
 			String movieCd = entity.getString("movieCd");
@@ -64,12 +64,13 @@ public class MovieInfoParsing2 {
 	}
 	
 	
-	//°¡Á®¿Â ¿µÈ­ÄÚµå(movieCd)·Î ¿µÈ­ »ó¼¼Á¤º¸ + ³×ÀÌ¹ö ¿µÈ­ Æ÷½ºÅÍ ÀÌ¹ÌÁö + TMDB ¿µÈ­ ½ºÆ¿ÄÆ ÀÌ¹ÌÁö ºÙÀÌ±â
-	public MovieInfo movieDataDetail(MovieInfo movie, String movieCd) throws IOException {
+	//åª›ï¿½ï¿½ì¡‡ï¿½ì‚© ï¿½ìºï¿½ì†•è‚„ë¶¾ë±¶(movieCd)æ¿¡ï¿½ ï¿½ìºï¿½ì†• ï¿½ê¸½ï¿½ê½­ï¿½ì ™è¹‚ï¿½ + ï¿½ê½•ï¿½ì” è¸°ï¿½ ï¿½ìºï¿½ì†• ï¿½ë£·ï¿½ë’ªï¿½ê½£ ï¿½ì” èª˜ëª„ï¿½ + TMDB ï¿½ìºï¿½ì†• ï¿½ë’ªï¿½ë–¥è€Œï¿½ ï¿½ì” èª˜ëª„ï¿½ éºìˆˆì” æ¹²ï¿½
+	public Movie movieDataDetail(Movie movie, String movieCd) throws IOException {
 		String json = "";
 		BufferedReader br;
 		
-		String key = "354c88719a60cd3da952a4be7dbf367e";
+		String key = "febb1987881018460c2e26f49f1a23b1";
+					//í˜•ì£¼: febb1987881018460c2e26f49f1a23b1 354c88719a60cd3da952a4be7dbf367e
         String apiURL;
         apiURL = "http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieInfo.json?key="
         		+ key + "&movieCd=" + movieCd;
@@ -134,8 +135,6 @@ public class MovieInfoParsing2 {
 		if(movie.getPosterImage()==null || movie.getBackdropImage()==null || movie.getOverView()==null)
 			movie = tmdbMovieData(movie, prdtYear, movieNm);
 		
-		
-		
 		br.close();
 		connection.disconnect();
 		
@@ -143,12 +142,13 @@ public class MovieInfoParsing2 {
 	}
 
 	
-	//TMDB¿¡¼­ Á¦°øÇÏ´Â OpenAPI JSON ÆÄÀÏÀ» StringÀ¸·Î º¯È¯ÇÏ¿© ¹İÈ¯
-	public MovieInfo tmdbMovieData(MovieInfo movie, String prdtYear, String movieNmEn) throws IOException {
+	//TMDBï¿½ë¿‰ï¿½ê½Œ ï¿½ì £æ€¨ë“¯ë¸¯ï¿½ë’— OpenAPI JSON ï¿½ë™†ï¿½ì”ªï¿½ì“£ Stringï¿½ì‘æ¿¡ï¿½ è¹‚ï¿½ï¿½ì†šï¿½ë¸¯ï¿½ë¿¬ è«›ì„‘ì†š
+	public Movie tmdbMovieData(Movie movie, String prdtYear, String movieNmEn) throws IOException {
 		String json = "";
 		BufferedReader br;
 		
 		String key = "fc26b37628734575187d1be55c6a3c85";
+					//í˜•ì£¼: fc26b37628734575187d1be55c6a3c85
 		String keyword = movieNmEn.toLowerCase();
 		if(keyword.length()==0)
         	keyword = movie.getMovieNm();
@@ -157,7 +157,7 @@ public class MovieInfoParsing2 {
         
         apiURL = "https://api.themoviedb.org/3/search/movie?"
         		+ "api_key=" + key + "&language=ko&query=" + encodedKeyword 
-        		+ "&include_adult=false";	//ÇØ´ç¿¬µµÀÇ ¿µÈ­¸¦ ¾Ë°í½ÍÀ¸¸é ¸Ç³¡¿¡ &year=2017 Á¶°ÇÀ» Ãß°¡
+        		+ "&include_adult=false";	//ï¿½ë¹ï¿½ë–¦ï¿½ë¿°ï¿½ë£„ï¿½ì“½ ï¿½ìºï¿½ì†•ç‘œï¿½ ï¿½ë¸£æ€¨ì¢ë–¢ï¿½ì‘ï§ï¿½ ï§â‘¤ê±¹ï¿½ë¿‰ &year=2017 è­°ê³Œêµ”ï¿½ì“£ ç•°ë¶½ï¿½
         
         URL url = new URL(apiURL);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -171,42 +171,89 @@ public class MovieInfoParsing2 {
 		JSONObject obj = new JSONObject(json);
 		JSONArray results = (JSONArray) obj.get("results");
 		
-		if(results.length()!=0) {
+		if(results.length()>1) {
 			
 			for (int i = 0; i < results.length(); i++) {
 				JSONObject entity = (JSONObject) results.get(i);
-				String release_date = entity.optString("release_date");
-				String title = entity.getString("title").toLowerCase();
-				String original_title = entity.getString("original_title").toLowerCase();
+				
+				String release_date = entity.optString("release_date", null);
+				if(!release_date.equals(""))
+					release_date = release_date.substring(0, 4);
 				String openDt = movie.getOpenDt();
 				if(!openDt.equals(""))
 					openDt = movie.getOpenDt().substring(0,4);
 				
-				if (release_date.contains(prdtYear) && keyword.contains(original_title)) {
+				String title = entity.getString("title").toLowerCase();
+				String original_title = entity.getString("original_title").toLowerCase();
+				
+				if (release_date.equals(prdtYear) && keyword.contains(original_title)) {
 					movie.setMovieId(entity.getInt("id"));
 					movie.setPosterImage(entity.optString("poster_path"));
 					movie.setBackdropImage(entity.optString("backdrop_path"));
 					movie.setOverView(entity.getString("overview"));
 				}
-				else if (release_date.contains(openDt) && keyword.contains(original_title)) {
+				else if (release_date.equals(prdtYear) && keyword.contains(title)) {
 					movie.setMovieId(entity.getInt("id"));
 					movie.setPosterImage(entity.optString("poster_path"));
 					movie.setBackdropImage(entity.optString("backdrop_path"));
 					movie.setOverView(entity.getString("overview"));
 				}
-				else if (release_date.contains(prdtYear) && keyword.contains(title)) {
+				else if (release_date.equals(openDt) && keyword.contains(original_title) && movie.getPosterImage()==null) {
 					movie.setMovieId(entity.getInt("id"));
 					movie.setPosterImage(entity.optString("poster_path"));
 					movie.setBackdropImage(entity.optString("backdrop_path"));
 					movie.setOverView(entity.getString("overview"));
 				}
-				else if (release_date.contains(openDt) && keyword.contains(title)) {
+				else if (release_date.equals(openDt) && keyword.contains(title) && movie.getPosterImage()==null) {
 					movie.setMovieId(entity.getInt("id"));
 					movie.setPosterImage(entity.optString("poster_path"));
 					movie.setBackdropImage(entity.optString("backdrop_path"));
 					movie.setOverView(entity.getString("overview"));
 				}
 			}
+		}
+		else if(results.length()==1) {
+			JSONObject entity = (JSONObject) results.get(0);
+			
+			/*movie.setMovieId(entity.getInt("id"));
+			movie.setPosterImage(entity.optString("poster_path"));
+			movie.setBackdropImage(entity.optString("backdrop_path"));
+			movie.setOverView(entity.getString("overview"));*/
+			
+			String release_date = entity.optString("release_date", null);
+			if(!release_date.equals(""))
+				release_date = release_date.substring(0, 4);
+			String openDt = movie.getOpenDt();
+			if(!openDt.equals(""))
+				openDt = movie.getOpenDt().substring(0,4);
+			
+			String title = entity.getString("title").toLowerCase();
+			String original_title = entity.getString("original_title").toLowerCase();
+			
+			if (release_date.equals(prdtYear)) {
+				movie.setMovieId(entity.getInt("id"));
+				movie.setPosterImage(entity.optString("poster_path"));
+				movie.setBackdropImage(entity.optString("backdrop_path"));
+				movie.setOverView(entity.getString("overview"));
+			}
+			/*else if (release_date.equals(prdtYear) && keyword.contains(title)) {
+				movie.setMovieId(entity.getInt("id"));
+				movie.setPosterImage(entity.optString("poster_path"));
+				movie.setBackdropImage(entity.optString("backdrop_path"));
+				movie.setOverView(entity.getString("overview"));
+			}
+			else if (release_date.equals(openDt) && keyword.contains(original_title) && movie.getPosterImage()==null) {
+				movie.setMovieId(entity.getInt("id"));
+				movie.setPosterImage(entity.optString("poster_path"));
+				movie.setBackdropImage(entity.optString("backdrop_path"));
+				movie.setOverView(entity.getString("overview"));
+			}
+			else if (release_date.equals(openDt) && keyword.contains(title) && movie.getPosterImage()==null) {
+				movie.setMovieId(entity.getInt("id"));
+				movie.setPosterImage(entity.optString("poster_path"));
+				movie.setBackdropImage(entity.optString("backdrop_path"));
+				movie.setOverView(entity.getString("overview"));
+			}*/
 		}
 		
 		int movieId = movie.getMovieId();
@@ -220,7 +267,7 @@ public class MovieInfoParsing2 {
 		return movie;
 	}
 	
-	public MovieInfo tmdbMovieTrailer(MovieInfo movie, int movieId) throws IOException {
+	public Movie tmdbMovieTrailer(Movie movie, int movieId) throws IOException {
 		String json = "";
 		BufferedReader br;
 		
@@ -258,7 +305,7 @@ public class MovieInfoParsing2 {
 	
 	
 	
-	/*	//Naver¿¡¼­ Á¦°øÇÏ´Â OpenAPI JSON ÆÄÀÏÀ» StringÀ¸·Î º¯È¯ÇÏ¿© ¹İÈ¯
+	/*	//Naverï¿½ë¿‰ï¿½ê½Œ ï¿½ì £æ€¨ë“¯ë¸¯ï¿½ë’— OpenAPI JSON ï¿½ë™†ï¿½ì”ªï¿½ì“£ Stringï¿½ì‘æ¿¡ï¿½ è¹‚ï¿½ï¿½ì†šï¿½ë¸¯ï¿½ë¿¬ è«›ì„‘ì†š
 	public MovieInfo naverMovieData(MovieInfo movie, String prdtYear) throws IOException {
 		String json = "";
 		BufferedReader br;
@@ -275,8 +322,8 @@ public class MovieInfoParsing2 {
         URL url = new URL(apiURL);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
-        connection.setRequestProperty("X-Naver-Client-Id", clientId); //¹ß±Ş¹ŞÀºID
-        connection.setRequestProperty("X-Naver-Client-Secret", clientSecret);//¹ß±Ş¹ŞÀºPW
+        connection.setRequestProperty("X-Naver-Client-Id", clientId); //è«›ì’“íˆ’è«›ì†ï¿½ID
+        connection.setRequestProperty("X-Naver-Client-Secret", clientSecret);//è«›ì’“íˆ’è«›ì†ï¿½PW
         connection.setRequestProperty("Content-Type", "application/json");
         
         br = new BufferedReader(new InputStreamReader(connection.getInputStream(),"UTF-8"));
@@ -311,14 +358,14 @@ public class MovieInfoParsing2 {
 	}*/
 	
 	//====================================================================================================================================
-/*    //XmlPullParser¸¦ ÀÌ¿ëÇÏ¿© ¿µÈ­ÁøÀÀÀ§¿øÈ¸ ¿¡¼­ Á¦°øÇÏ´Â OpenAPI XML ÆÄÀÏ ÆÄ½ÌÇÏ±â(parsing)
+/*    //XmlPullParserç‘œï¿½ ï¿½ì” ï¿½ìŠœï¿½ë¸¯ï¿½ë¿¬ ï¿½ìºï¿½ì†•ï§ê¾©ì“³ï¿½ìï¿½ìï¿½ì‰¶ ï¿½ë¿‰ï¿½ê½Œ ï¿½ì £æ€¨ë“¯ë¸¯ï¿½ë’— OpenAPI XML ï¿½ë™†ï¿½ì”ª ï¿½ë™†ï¿½ë–›ï¿½ë¸¯æ¹²ï¿½(parsing)
     public ArrayList<MovieInfo> getXmlData(String keyword) throws IOException {
     	boolean inMovieNm = false, inOpenDt = false, inNationAlt = false, inGenreAlt = false;
         String movieNm = "", openDt = "", nationAlt = "", genreAlt = "";
     	
     	ArrayList<MovieInfo> list = new ArrayList<MovieInfo>();
     	MovieInfo info;
-    	//http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieList.xml?key=354c88719a60cd3da952a4be7dbf367e&movieNm=Ãß°İÀÚ
+    	//http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieList.xml?key=354c88719a60cd3da952a4be7dbf367e&movieNm=ç•°ë¶½êº½ï¿½ì˜„
     	String key = "354c88719a60cd3da952a4be7dbf367e";
     	String encodedKeyword = URLEncoder.encode(keyword, "UTF-8");
         String apiURL;
@@ -333,7 +380,7 @@ public class MovieInfoParsing2 {
         try {
             XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
             XmlPullParser xpp = factory.newPullParser();
-            xpp.setInput(connection.getInputStream(), "UTF-8");  //xml ÀÔ·Â¹Ş±â
+            xpp.setInput(connection.getInputStream(), "UTF-8");  //xml ï¿½ì—¯ï¿½ì °è«›ì„ë¦°
 
             String tag;
             xpp.next();
@@ -346,9 +393,9 @@ public class MovieInfoParsing2 {
                     case XmlPullParser.START_DOCUMENT:
                         break;
 
-                    case XmlPullParser.START_TAG:		//1. startÅÂ±×¸¦ ÀĞÀ¸¸é¼­ ÇØ´çÅÂ±×¸é º¯¼ö flag¸¦ true·Î ¹Ù²ãÁÜ
+                    case XmlPullParser.START_TAG:		//1. startï¿½ê¹­æ´¹ëªƒï¿½ï¿½ ï¿½ì”«ï¿½ì‘ï§ëŒê½Œ ï¿½ë¹ï¿½ë–¦ï¿½ê¹­æ´¹ëªƒãˆƒ è¹‚ï¿½ï¿½ë‹” flagç‘œï¿½ trueæ¿¡ï¿½ è«›ë¶½í“­ä»¥ï¿½
 //                    	System.out.println("1: start tag");
-                        tag = xpp.getName();    //ÅÂ±× ÀÌ¸§ ¾ò¾î¿À±â
+                        tag = xpp.getName();    //ï¿½ê¹­æ´¹ï¿½ ï¿½ì” ç”±ï¿½ ï¿½ë¼¸ï¿½ë¼±ï¿½ì‚¤æ¹²ï¿½
 //                        System.out.println("tag: "+tag);
                         
                         if (tag.equals("movieNm")) {
@@ -369,37 +416,37 @@ public class MovieInfoParsing2 {
 
                         break;
 
-                    case XmlPullParser.TEXT:		//2. ÅÂ±×ÀÇ text¸¦ ÀÓ½Ãº¯¼ö¿¡ ³Ö¾îÁÜ
+                    case XmlPullParser.TEXT:		//2. ï¿½ê¹­æ´¹ëª„ì“½ textç‘œï¿½ ï¿½ì—«ï¿½ë–†è¹‚ï¿½ï¿½ë‹”ï¿½ë¿‰ ï¿½ê½”ï¿½ë¼±ä»¥ï¿½
 //                    	System.out.println("2: text");
                         if (inMovieNm) {
-//                        	System.out.println("2-1: text ÀĞ¾î¿À±â");
+//                        	System.out.println("2-1: text ï¿½ì”«ï¿½ë¼±ï¿½ì‚¤æ¹²ï¿½");
                         	movieNm = xpp.getText();
                             inMovieNm = false;
                         }
                         if (inOpenDt) {
-//                        	System.out.println("2-2: text ÀĞ¾î¿À±â");
+//                        	System.out.println("2-2: text ï¿½ì”«ï¿½ë¼±ï¿½ì‚¤æ¹²ï¿½");
                         	openDt = xpp.getText();
                             inOpenDt = false;
                         }
                         if (inNationAlt) {
-//                        	System.out.println("2-3: text ÀĞ¾î¿À±â");
+//                        	System.out.println("2-3: text ï¿½ì”«ï¿½ë¼±ï¿½ì‚¤æ¹²ï¿½");
                         	nationAlt = xpp.getText();
                             inNationAlt = false;
                         }
                         if (inGenreAlt) {
-//                        	System.out.println("2-4: text ÀĞ¾î¿À±â");
+//                        	System.out.println("2-4: text ï¿½ì”«ï¿½ë¼±ï¿½ì‚¤æ¹²ï¿½");
                         	genreAlt = xpp.getText();
                             inGenreAlt = false;
                         }
 
                         break;
 
-                    case XmlPullParser.END_TAG:		//3. ¿µÈ­ 1°³°¡ ³¡³ª´Â ÅÂ±×(movie)¸¦ ¸¸³ª¸é ÀÓ½Ãº¯¼öÀÌ ÀÖ´Â °ªÀ» ¸ù¶¥ Å¬·¡½º¿¡ ³Ö°í list¹è¿­¿¡ Ãß°¡ÇÔ
+                    case XmlPullParser.END_TAG:		//3. ï¿½ìºï¿½ì†• 1åª›ì’“ï¿½ ï¿½ê±¹ï¿½êµ¹ï¿½ë’— ï¿½ê¹­æ´¹ï¿½(movie)ç‘œï¿½ ï§ëš®êµ¹ï§ï¿½ ï¿½ì—«ï¿½ë–†è¹‚ï¿½ï¿½ë‹”ï¿½ì”  ï¿½ì—³ï¿½ë’— åª›ë¯ªì“£ ï§ìˆë¸™ ï¿½ê²¢ï¿½ì˜’ï¿½ë’ªï¿½ë¿‰ ï¿½ê½”æ€¨ï¿½ listè«›ê³—ë¿´ï¿½ë¿‰ ç•°ë¶½ï¿½ï¿½ë¸¿
 //                    	System.out.println("3: end tag");
-                        tag = xpp.getName();    //Å×±× ÀÌ¸§ ¾ò¾î¿À±â
+                        tag = xpp.getName();    //ï¿½ë€’æ´¹ï¿½ ï¿½ì” ç”±ï¿½ ï¿½ë¼¸ï¿½ë¼±ï¿½ì‚¤æ¹²ï¿½
 //                        System.out.println("tag: "+tag+"\n==============");
                         if (tag.equals("movie")) {
-//                        	System.out.println("3-1: ¸®½ºÆ®¿¡ ´ã±â\n********************************************************");
+//                        	System.out.println("3-1: ç”±ÑŠë’ªï¿½ë“ƒï¿½ë¿‰ ï¿½ë–æ¹²ï¿½\n********************************************************");
                         	info = new MovieInfo();
                             info.setMovieNm(movieNm);
                             info.setOpenDt(openDt);
