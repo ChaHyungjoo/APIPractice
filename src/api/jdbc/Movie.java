@@ -2,7 +2,8 @@ package api.jdbc;
 
 public class Movie {
 	//----영화진흥위원회(kobis)에서 가져오는 부분-----------------------------
-	private String movieCd;			//영화코드(영화진흥위원회에 등록된 영화)
+	//private String movieCd;			//영화코드(영화진흥위원회에 등록된 영화)
+	private int movieCd;			//영화코드(영화진흥위원회에 등록된 영화)
 	private String movieNm;			//영화명(국문)
 	private String movieNmEn;		//영화명(영문)
 	private String showTm;			//상영시간
@@ -22,15 +23,21 @@ public class Movie {
 	private String trailer;			//예고편
 	
 
-	public void setMovieId(int movieId) {
-		this.movieId = movieId;
-	}
+	
 
-	public String getMovieCd() {
+	/*public String getMovieCd() {
 		return movieCd;
 	}
 
 	public void setMovieCd(String movieCd) {
+		this.movieCd = movieCd;
+	}*/
+
+	public int getMovieCd() {
+		return movieCd;
+	}
+
+	public void setMovieCd(int movieCd) {
 		this.movieCd = movieCd;
 	}
 
@@ -128,6 +135,10 @@ public class Movie {
 	
 	public int getMovieId() {
 		return movieId;
+	}
+	
+	public void setMovieId(int movieId) {
+		this.movieId = movieId;
 	}
 
 	public String getBackdropImage() {

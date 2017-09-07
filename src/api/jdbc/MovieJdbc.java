@@ -26,7 +26,7 @@ public class MovieJdbc {
 			
 			      // ½ÇÇà
 			      PreparedStatement st = con.prepareStatement(sql);
-			      st.setString(1, movieList.get(i).getMovieCd());
+			      st.setInt(1, movieList.get(i).getMovieCd());
 			      st.setString(2, movieList.get(i).getMovieNm());
 			      st.setString(3, movieList.get(i).getMovieNmEn());
 			      st.setString(4, movieList.get(i).getShowTm());

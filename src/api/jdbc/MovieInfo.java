@@ -50,7 +50,8 @@ public class MovieInfo {
 			JSONObject entity = (JSONObject) movieList.get(i);
 			
 			String movieCd = entity.getString("movieCd");
-			movie.setMovieCd(movieCd);
+			//movie.setMovieCd(movieCd);
+			movie.setMovieCd(Integer.parseInt(movieCd));
 			
 			if(entity.getString("movieNmEn").equals("Package Screening")) continue;
 			//else if(entity.getString("prdtYear").equals("")) continue;
