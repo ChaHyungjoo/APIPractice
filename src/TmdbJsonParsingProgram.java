@@ -12,7 +12,7 @@ public class TmdbJsonParsingProgram {
 		JsonParsing parsing = new JsonParsing();
 		ArrayList<Movie> list = new ArrayList<>();
 		
-		String keyword = "스파이더맨";
+		String keyword = "분홍신";
 		String key = "fc26b37628734575187d1be55c6a3c85";
 		
 		try {

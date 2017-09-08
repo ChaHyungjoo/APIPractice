@@ -10,7 +10,7 @@ public class MovieProgram {
 		movieInfo movieInfo = new movieInfo();
 		ArrayList<Movie> list = new ArrayList<>();
 		
-		String keyword = "타이타닉";
+		String keyword = "그것";
 		
 		try {
 			list = movieInfo.movieData(keyword);
@@ -21,6 +21,7 @@ public class MovieProgram {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
 	}
 
 }

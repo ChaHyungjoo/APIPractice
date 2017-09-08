@@ -146,7 +146,9 @@ public class Movie {
 	}
 	
 	public void setBackdropImage(String backdropImage) {
-		if(backdropImage.length()==0)
+		if(backdropImage==null)
+			this.backdropImage = null;
+		else if(backdropImage.length()==0)
 			this.backdropImage = null;
 		else
 			this.backdropImage = "https://image.tmdb.org/t/p/w1920"+backdropImage;
