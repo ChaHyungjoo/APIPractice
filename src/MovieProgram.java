@@ -10,7 +10,7 @@ public class MovieProgram {
 		movieInfo movieInfo = new movieInfo();
 		ArrayList<Movie> list = new ArrayList<>();
 		
-		String keyword = "너의 이름은";
+		String keyword = "택시운전사";
 		
 		try {
 			list = movieInfo.movieData(keyword);
